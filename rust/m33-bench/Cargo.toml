@@ -1,0 +1,12 @@
+[package]
+name = "m33-bench"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+description = "Mede o núcleo no Cortex-M33: roda o bench-m33-fw num emulador de CPU ARM e conta instruções por quadro"
+
+[dependencies]
+unicorn-engine = { version = "2", default-features = false, features = ["arch_arm"] }
+object = { version = "0.36", default-features = false, features = ["read", "elf"] }
+rustc-demangle = "0.1"

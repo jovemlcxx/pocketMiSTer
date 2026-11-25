@@ -1,0 +1,20 @@
+[package]
+name = "bench-m33-fw"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+description = "Firmware mínimo para medir o núcleo no Cortex-M33: o m33-bench o roda num emulador de CPU ARM"
+
+[dependencies]
+nes-core = { path = "../nes-core" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+debug = false
+
+# só compila para a placa: fica fora do workspace do PC
+[workspace]

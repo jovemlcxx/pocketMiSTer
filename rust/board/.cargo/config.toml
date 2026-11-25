@@ -1,0 +1,11 @@
+[build]
+target = "thumbv8m.main-none-eabihf"
+
+[target."thumbv8m.main-none-eabihf"]
+# grava e roda na placa ligada em modo BOOTSEL
+runner = "picotool load -u -v -x -t elf"
+rustflags = [
+    "-C", "target-cpu=cortex-m33",
+    "-C", "link-arg=--nmagic",
+    "-C", "link-arg=-Tlink.x",
+]

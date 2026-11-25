@@ -1,0 +1,26 @@
+[package]
+name = "pocketmister-board"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+description = "Firmware do pocketMiSTer para a Waveshare RP2350-PiZero: núcleo NES, DVI pelo PIO, cartão SD e dois controles"
+
+[dependencies]
+nes-core = { path = "../nes-core" }
+rp235x-hal = { version = "0.3", features = ["binary-info", "critical-section-impl", "rt"] }
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+embedded-hal = "1"
+panic-halt = "1"
+font8x8 = { version = "0.3", default-features = false }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+debug = 2
+
+# só compila para a placa: fica fora do workspace do PC
+[workspace]

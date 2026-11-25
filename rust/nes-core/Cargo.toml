@@ -1,0 +1,9 @@
+[package]
+name = "nes-core"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+description = "Núcleo do pocketMiSTer: CPU, PPU, mappers e sistema do NES, sem std, igual no PC e na RP2350"
+
+[dependencies]

@@ -1,0 +1,14 @@
+[package]
+name = "nes_run"
+version = "0.1.0"
+edition = "2024"
+publish = false
+description = "nes_run: roda uma ROM no PC sem janela (hashes por quadro, PPM, resultado do blargg)"
+
+[[bin]]
+name = "nes_run"
+path = "src/main.rs"
+
+[dependencies]
+nes-core = { path = "../nes-core" }
+

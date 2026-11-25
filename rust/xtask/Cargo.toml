@@ -1,0 +1,13 @@
+[package]
+name = "xtask"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+description = "Ferramentas do pocketMiSTer no PC: testes (nestest, blargg, identidade), clipes, bancada do M33 e esquemas"
+
+[dependencies]
+nes-core = { path = "../nes-core" }
+image = { version = "0.25", default-features = false, features = ["jpeg", "webp", "png"] }
+interface = { path = "../interface" }
+color_quant = "1"

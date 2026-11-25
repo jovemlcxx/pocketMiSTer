@@ -1,0 +1,6 @@
+{
+  "schema": "rust-anything/front-door@1",
+  "name": "nes_run",
+  "commands": [],
+  "units": []
+}

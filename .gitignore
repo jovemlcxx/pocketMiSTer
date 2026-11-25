@@ -1,0 +1,35 @@
+# saídas de build
+build/
+rust/target/
+rust/*/target/
+
+# material de terceiros (clones e fotos de anúncio)
+referencias/
+
+# jogos: nunca versionar ROMs
+roms/
+*.sfc
+*.smc
+*.srm
+
+# vídeos e telas de demonstração gerados a partir de jogos comerciais
+demo/
+
+# casos de replay: guardam caminhos desta máquina e nomes de ROMs comerciais
+rust/app-cases/
+rust/app-inputs.jsonl
+
+# levam a foto do anúncio da Waveshare (direitos dela): trocar por foto própria antes de publicar
+hardware/pocketmister-board.*
+hardware/pocketmister-manual.html
+hardware/*.pdf
+
+# relatórios internos de agentes
+docs/agy-report.md
+
+# editores e sistema
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
