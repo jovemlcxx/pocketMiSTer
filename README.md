@@ -4,7 +4,8 @@ Um console de videogame pequeno, barato e aberto: uma placa de microcontrolador 
 controles de Super Nintendo, com um emulador escrito do zero em Rust.
 
 O objetivo é que qualquer pessoa consiga montar o seu (em casa, numa escola ou num projeto de bairro) e que, no
-caminho, aprenda um pouco de eletrônica e de programação. A documentação é em português, passo a passo.
+caminho, aprenda noções de eletrônica e de informática: como um computador funciona por dentro, do processador à
+imagem na tela. A documentação é em português, passo a passo.
 
 > **Estado: alfa.** O núcleo de NES está completo e testado no PC. O firmware compila, mas ainda não foi testado
 > na placa.
