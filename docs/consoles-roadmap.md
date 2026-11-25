@@ -13,13 +13,13 @@ WonderSwan. Decisão: todo console novo segue o Mesen2 como referência de compo
 
 | Console (Mesen2) | Nesta placa | Prioridade |
 |---|---|---|
-| NES | feito | — |
+| NES | feito | já feito |
 | SNES | experimental: pulo de quadros, sem SA-1 e SuperFX | 1 (pedido do usuário) |
 | Game Boy / Game Boy Color | cabe (~2-3 M instruções por quadro) | 2 |
 | Master System / Game Gear | cabe (~2,2-3,3 M) | 2 |
 | WonderSwan / Color | cabe: V30MZ a 3,07 MHz, 224x144 a 75 Hz, estimativa ~2-3 M | 3 |
 | PC Engine | no limite (~5 M): overclock ou os dois núcleos | 3 |
-| GBA | não cabe: memória (EWRAM + VRAM) e ROMs de 16-32 MB | — |
+| GBA | não cabe: memória (EWRAM + VRAM) e ROMs de 16-32 MB | fora |
 
 Fora do Mesen2: Atari 2600 (cabe, sem pressa), Mega Drive (pesado) e PICO-8 (precisa de um interpretador Lua
 `no_std` em Rust).
@@ -43,9 +43,9 @@ são de memória: conferir no repositório ao começar cada unidade.
 | S2 | SPC700 e DSP de som | `Core/SNES/Spc*`, `SnesDsp*` | SingleStepTests do SPC700; som comparado com o Mesen2 em arquivos `.spc` |
 | S3 | PPU de referência, ponto a ponto | `Core/SNES/SnesPpu*` | ROMs de teste de PPU; quadros comparados com capturas do Mesen2 |
 | S4 | Barramento, DMA/HDMA, LoROM/HiROM, controles | `Core/SNES/SnesMemoryManager*`, `SnesDmaController*`, `BaseCartridge*` | os 8 jogos sem chip extra rodando no PC (`snes_run`, como o `nes_run`) |
-| S5 | Medição no M33 | — | `m33-bench` com o núcleo SNES: confirma ou corrige a estimativa de 8-11 M instruções por quadro |
-| S6 | PPU rápida por linha e pulo de quadros | — | comparação com a S3, lista do que difere |
-| S7 | Na placa | — | ROM na PSRAM (cache de 16 KB do XIP), som, menu do frontend lendo `snes/` |
+| S5 | Medição no M33 | nenhuma | `m33-bench` com o núcleo SNES: confirma ou corrige a estimativa de 8-11 M instruções por quadro |
+| S6 | PPU rápida por linha e pulo de quadros | nenhuma | comparação com a S3, lista do que difere |
+| S7 | Na placa | nenhuma | ROM na PSRAM (cache de 16 KB do XIP), som, menu do frontend lendo `snes/` |
 
 Fora do escopo: chips extras (SA-1, SuperFX, DSP-1, Cx4, S-DD1, SPC7110). O SA-1 é um segundo 65816 a 10,7 MHz e o
 SuperFX um RISC de 10,7-21 MHz; não cabem no orçamento.

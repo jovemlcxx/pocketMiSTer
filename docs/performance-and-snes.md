@@ -59,7 +59,7 @@ README de cada projeto (números deles, não medidos aqui).
 | Mega Drive | 68000 128 mil + Z80 60 mil ciclos | 320x224, 2 planos + sprites | 9-10 (FM YM2612 sozinho 2-3) | 550-850 | [frank-genesis](https://github.com/rh1tech/frank-genesis), pico-genesisPlus (sem números) | **pesado**: pulo de quadros e FM simplificado |
 | SNES | 65816 ~50 mil + SPC700 17 mil ciclos | 256x224, até 4 camadas + mistura | 8-11 | 480-1000 | [pico-snesPlus](https://github.com/fhoedemakers/pico-snesPlus), [frank-snes](https://github.com/rh1tech/frank-snes) (com pulo de quadros) | **pesado**: experimental, só sem chips extras |
 | Game Boy Advance | ARM7, 280 mil ciclos | 240x160, 4 camadas + rotação | 6-8+ | 400+ | nenhum encontrado | **não cabe**: memória, ver abaixo |
-| PICO-8 | máquina virtual Lua | 128x128, 16 cores | depende do cartucho | — | nenhum encontrado | **possível para cartuchos leves**, ver abaixo |
+| PICO-8 | máquina virtual Lua | 128x128, 16 cores | depende do cartucho | não se aplica | nenhum encontrado | **possível para cartuchos leves**, ver abaixo |
 
 Conferência do modelo: o gwenesis (núcleo de Mega Drive do frank-genesis) diz rodar a 60 qps num Cortex-M7 de
 280 MHz. O M7 faz cerca de duas instruções por ciclo, o que equivale a uns 560 MHz de M33, dentro da faixa
@@ -83,14 +83,14 @@ Falta um interpretador Lua no_std em Rust, o que é um trabalho à parte.
 
 | Jogo | Tamanho | Mapa | Chip extra |
 |---|---|---|---|
-| Desolate (homebrew, SNESDEV 2025) | 0,25 MB | LoROM | — |
-| Tetris Attack | 1 MB | LoROM | — |
-| Shin Kidou Senki Gundam W - Endless Duel | 2 MB | LoROM | — |
-| The Legend of Zelda - A Link to the Past | 2 MB | LoROM | — |
-| Castlevania - Vampire's Kiss (custom) | 2 MB | LoROM | — |
-| Final Fight 3 | 3 MB | HiROM | — |
-| Super Castlevania IV | 3 MB | LoROM | — |
-| Chrono Trigger (tradução BR) | 4 MB | HiROM | — |
+| Desolate (homebrew, SNESDEV 2025) | 0,25 MB | LoROM | nenhum |
+| Tetris Attack | 1 MB | LoROM | nenhum |
+| Shin Kidou Senki Gundam W - Endless Duel | 2 MB | LoROM | nenhum |
+| The Legend of Zelda - A Link to the Past | 2 MB | LoROM | nenhum |
+| Castlevania - Vampire's Kiss (custom) | 2 MB | LoROM | nenhum |
+| Final Fight 3 | 3 MB | HiROM | nenhum |
+| Super Castlevania IV | 3 MB | LoROM | nenhum |
+| Chrono Trigger (tradução BR) | 4 MB | HiROM | nenhum |
 | Super Mario World | 1 MB | SA-1 | SA-1 (versão convertida para SA-1) |
 | Mega Man X | 1,5 MB | SA-1 | SA-1 (versão convertida para SA-1) |
 | Super Mario Kart ("PSICOPOMPO-FULLSCREEN") | 4 MB | SA-1 | SA-1 (hack) |
@@ -142,7 +142,7 @@ Medido com `firmware/tools/m33_bench.py`:
 | Jogo (quadros medidos) | Instruções M33 por quadro | Para 60 qps | Frequência estimada (60 qps) | Leituras na PSRAM por quadro |
 |---|---|---|---|---|
 | Probotector II (860-862, jogando) | **3,98 M** | 239 M instr/s | 239-355 MHz | 40,8 mil |
-| Castlevania III / Akumajou Densetsu (1230-1232, fase 1-01) | **4,74 M** | 284 M instr/s | 284-426 MHz | — |
+| Castlevania III / Akumajou Densetsu (1230-1232, fase 1-01) | **4,74 M** | 284 M instr/s | 284-426 MHz | não medido |
 
 Meta de **menos de 4,0 M instruções por quadro** atingida no Probotector II, mantendo identidade exata (imagem, RAM e ciclos) contra a referência ponto a ponto. O Castlevania III ainda passa da meta: o VRC6 conta a IRQ a cada ciclo de CPU (`mapper_cpu_cycle`), o que a previsão de eventos ainda não cobre.
 

@@ -1,94 +1,108 @@
 # pocketMiSTer
 
-Um console de videogame pequeno, barato e aberto: uma placa de microcontrolador RP2350, um cartão micro SD e
-controles de Super Nintendo, com um emulador escrito do zero em Rust.
+Um videogame pequeno, barato e aberto, que cabe numa caixinha de fita cassete.
 
-O objetivo é que qualquer pessoa consiga montar o seu (em casa, numa escola ou num projeto de bairro) e que, no
-caminho, aprenda noções de eletrônica e de informática: como um computador funciona por dentro, do processador à
-imagem na tela. A documentação é em português, passo a passo.
+Por dentro tem uma placa com o microcontrolador RP2350, um cartão micro SD com os jogos e duas entradas para
+controle de Super Nintendo. O emulador foi escrito do zero, em Rust, pensado para essa placa.
 
-> **Estado: alfa.** O núcleo de NES está completo e testado no PC. O firmware compila, mas ainda não foi testado
-> na placa.
+A ideia é que qualquer pessoa consiga montar o seu, em casa, na escola ou num projeto do bairro. E que, montando,
+pegue noções de eletrônica e de informática, entendendo como um computador funciona por dentro, do processador até
+a imagem na tela.
 
-## Hardware
+Toda a documentação é em português e vai passo a passo.
 
-- **Placa:** Waveshare RP2350-PiZero (RP2350, 16 MB de flash, micro SD e saída mini HDMI)
-- **Memória extra:** PSRAM APS6404L-3SQR-SN de 8 MB, soldada no lugar reservado da placa
-- **Controles:** dois conectores de controle SNES
-- **Vídeo:** adaptador mini HDMI para HDMI, imagem 4:3 centralizada em qualquer TV
+> O projeto está em alfa. O emulador de NES já está completo e testado no computador, e o firmware da placa
+> compila, mas ainda não rodou numa placa de verdade.
 
-Ligações em [`hardware/`](hardware/).
+## Do que você precisa
 
-## Organização
+Uma Waveshare RP2350-PiZero, que já vem com 16 MB de flash, entrada de micro SD e saída mini HDMI.
 
-| Pasta | Conteúdo |
+Um chip de memória PSRAM APS6404L-3SQR-SN, de 8 MB, soldado no espaço que a placa deixa reservado para ele.
+
+Dois conectores de controle de Super Nintendo e um adaptador de mini HDMI para HDMI. A imagem sai em 4:3,
+centralizada, em qualquer TV.
+
+O esquema de ligação está na pasta [`hardware/`](hardware/).
+
+## Como o projeto está organizado
+
+Todo o código fica em [`rust/`](rust/), a parte elétrica em [`hardware/`](hardware/) e os textos sobre desempenho,
+frontend e próximos consoles em [`docs/`](docs/).
+
+Dentro de `rust/`, cada pasta cuida de uma coisa:
+
+| Pasta | O que tem |
 |---|---|
-| [`rust/`](rust/) | Todo o código: núcleo de emulação, firmware da placa, frontend, ferramentas e testes |
-| [`hardware/`](hardware/) | Esquema de ligação dos controles e da placa |
-| [`docs/`](docs/) | Desempenho, viabilidade de outros consoles, frontend e cartão SD |
+| `nes-core/` | O emulador de NES. O mesmo código roda no computador e na placa |
+| `interface/` | O menu de jogos, no estilo do menu do MiSTer, com temas e fundos |
+| `board/` | O firmware da placa, com vídeo, menu e controles |
+| `app/` | O `nes_run`, que roda um jogo no computador e salva imagem e som |
+| `xtask/` | Os comandos de apoio: testes, simulação das telas, esquemas e o pacote de jogos |
+| `m33-bench/` e `bench-m33-fw/` | A bancada que mede quanto o emulador custa no processador da placa |
 
-Dentro de `rust/`:
+O que já foi feito e o que falta está em `rust/MAP.md`. As decisões de projeto, com o motivo de cada uma, estão em
+`rust/DECISIONS.md`.
 
-| Crate | O que é |
-|---|---|
-| `nes-core/` | Núcleo do NES (CPU, PPU, APU, mappers), `no_std` e sem `unsafe`: o mesmo código roda no PC e na placa |
-| `interface/` | Frontend sem hardware: catálogo do cartão SD, telas no estilo do menu do MiSTer, temas, fundos, modos de vídeo |
-| `board/` | Firmware da RP2350: vídeo DVI pelo PIO, menu de jogos e controles |
-| `app/` | `nes_run`: roda uma ROM no PC sem janela (imagem, som em WAV, resultado dos testes) |
-| `xtask/` | `cargo xtask`: testes, clipes de vídeo, simulação das telas, esquemas e o pacote de jogos |
-| `m33-bench/`, `bench-m33-fw/` | Bancada que mede o núcleo no Cortex-M33 da RP2350, instrução por instrução |
+## Onde estamos
 
-`rust/MAP.md` lista o que foi feito e o que falta; `rust/DECISIONS.md` registra as decisões de projeto.
+O processador do NES bate instrução por instrução com o `nestest`, o teste de referência mais usado.
 
-## Situação
+O vídeo tem duas versões, uma exata e outra rápida para a placa, e as duas geram a mesma imagem, pixel por pixel.
 
-| Parte | Estado |
-|---|---|
-| CPU 6502 | idêntica ao log de referência `nestest`, ciclo a ciclo (8991/8991) |
-| PPU | versão rápida idêntica à de referência ponto a ponto |
-| APU | 2 pulsos, triângulo, ruído, DMC com o DMA exato; VRC6 e Sunsoft 5B |
-| Testes do blargg | 51 de 56 (os 5 restantes só mostram um CRC na tela, sem valor esperado) |
-| Mappers | NROM, MMC1, UxROM, CNROM, MMC3, VRC6, FME-7; save de bateria |
-| Desempenho | 4,2 a 4,7 M instruções por quadro no Cortex-M33, com som ([`docs/performance-and-snes.md`](docs/performance-and-snes.md)) |
-| Frontend | telas, temas e fundos prontos e simulados no PC; falta ligar ao firmware |
-| Firmware | primeira versão, não testada na placa; falta som, cartão SD e PSRAM |
-| Outros consoles | planejados, com o Mesen2 como referência ([`docs/consoles-roadmap.md`](docs/consoles-roadmap.md)) |
+O som tem todos os canais do NES e mais os chips extras do Castlevania III japonês e do Gimmick. Dos testes do
+blargg, passa em 51 de 56. Os cinco que faltam só mostram um código na tela, sem um valor certo para comparar.
 
-## Usando no PC
+Os cartuchos suportados cobrem a maior parte da biblioteca do NES (NROM, MMC1, UxROM, CNROM, MMC3, VRC6 e FME-7),
+e o save dos jogos que têm bateria funciona.
 
-Precisa do Rust (`rustup`). Dentro de `rust/`:
+Na placa, cada quadro custa entre 4,2 e 4,7 milhões de instruções, com som. Os números e as contas estão em
+[`docs/performance-and-snes.md`](docs/performance-and-snes.md).
+
+O menu já está desenhado e simulado no computador, mas ainda não foi ligado ao firmware. Na placa ainda faltam
+som, cartão SD e PSRAM.
+
+Depois do NES vêm outros consoles, começando pelo Super Nintendo, sempre usando o Mesen2 como referência. O plano
+está em [`docs/consoles-roadmap.md`](docs/consoles-roadmap.md).
+
+## Rodando no computador
+
+Você precisa do Rust instalado (pelo `rustup`). Os comandos rodam de dentro da pasta `rust/`:
 
 ```sh
-cargo xtask nestest                      # CPU contra o log de referência
-cargo xtask identity                     # PPU rápida contra a de referência, quadro a quadro
+cargo xtask nestest                      # processador contra o teste de referência
+cargo xtask identity                     # vídeo rápido contra o exato, quadro a quadro
 cargo xtask blargg                       # testes do blargg (ROMs de teste em referencias/nes-test-roms)
-cargo test --workspace --release         # testes do núcleo e do frontend
+cargo test --workspace --release         # todos os testes
 cargo run --release -p nes_run -- jogo.nes 600 tela.ppm --wav som.wav
-cargo xtask simulate                     # telas do frontend em PNG
+cargo xtask simulate                     # telas do menu em PNG
 ```
 
 ## Gravando na placa
 
 ```sh
-cargo xtask pack pacote.bin roms/*.nes           # junta os jogos
-picotool load -o 0x10800000 pacote.bin           # grava o pacote a 8 MB da flash
+cargo xtask pack pacote.bin roms/*.nes           # junta os jogos num pacote
+picotool load -o 0x10800000 pacote.bin           # grava o pacote na flash
 cd board && cargo run --release                  # compila e grava o firmware (placa em modo BOOTSEL)
 ```
 
-Nenhuma ROM acompanha o projeto. Use só jogos que você tem o direito de usar.
+Nenhum jogo vem junto com o projeto. Use só os que você tem direito de usar.
 
-## Por que um núcleo próprio
+## Por que um emulador próprio
 
-Os emuladores que já rodam nessa classe de placa trocam precisão por velocidade. Este projeto escreve o seu
-próprio núcleo, pensado para o RP2350 desde o início: um ciclo do processador emulado é um acesso ao barramento, o
-código roda igual no PC (onde é testado contra referências) e na placa, e não depende de biblioteca nenhuma. A
-NESdev Wiki e o Mesen (mesma licença GPL) são as referências de comportamento.
+Os emuladores que já rodam nesse tipo de placa abrem mão de precisão para ganhar velocidade.
 
-## Contribuindo
+Aqui a gente quis o contrário: começar exato e só depois ficar rápido, provando a cada passo que nada mudou. O
+mesmo código roda no computador, onde é testado contra referências, e na placa, sem depender de nenhuma
+biblioteca. As referências de comportamento são a NESdev Wiki e o Mesen, que tem a mesma licença.
 
-Testes, montagens em outras placas, tradução da documentação e oficinas usando o projeto são bem-vindos. Todo
-comportamento novo no núcleo deve vir com um teste que compare contra uma referência.
+## Quer ajudar?
+
+Testar, montar em outras placas, traduzir a documentação ou usar o projeto numa oficina, tudo ajuda.
+
+No emulador, a regra é uma só: comportamento novo chega junto com um teste que compare com uma referência.
 
 ## Licença
 
-Código sob GPL-3.0-or-later; documentação e esquemas sob CC BY-SA 4.0. Detalhes em [`LICENSE.md`](LICENSE.md).
+O código é GPL-3.0-or-later, e a documentação e os esquemas são CC BY-SA 4.0. Os detalhes estão em
+[`LICENSE.md`](LICENSE.md).
